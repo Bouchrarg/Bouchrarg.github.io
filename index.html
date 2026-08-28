@@ -1,0 +1,549 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bouchra Rguibi</title>
+<meta name="description" content="AI and full stack engineer building fiscal copilots, tagging engines, and the interfaces that make them usable.">
+<link rel="icon" href="data:,">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+  :root {
+    --bg: #0B0F14;
+    --surface: #12171F;
+    --border: #262E3A;
+    --text: #E7E4D9;
+    --text-dim: #8B93A3;
+    --amber: #E8A33D;
+    --amber-dim: #6B5326;
+    --teal: #4FB8A6;
+    --teal-dim: #2A4C48;
+    --grey-pill: #333B47;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  body {
+    font-family: 'Manrope', system-ui, sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  a { color: inherit; }
+
+  a:focus-visible, button:focus-visible {
+    outline: 2px solid var(--amber);
+    outline-offset: 2px;
+  }
+
+  .masthead {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 32px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    border-bottom: 1px solid var(--border);
+  }
+  .masthead .path span { color: var(--amber); }
+  .status-dot {
+    display: inline-block;
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--teal);
+    margin-right: 8px;
+    box-shadow: 0 0 8px var(--teal);
+  }
+
+  .hero {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 104px 40px 64px;
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+  }
+
+  .status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--teal);
+    margin: 0;
+  }
+  .status-badge .dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--teal);
+    box-shadow: 0 0 7px var(--teal);
+  }
+
+  .hero .name {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    color: var(--text);
+    margin: 0 0 8px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .hero .name .rule {
+    width: 34px;
+    height: 2px;
+    background: var(--amber);
+  }
+
+  .hero .role {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.92rem;
+    color: var(--amber);
+    margin: 0;
+  }
+
+  .terminal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 34px 38px;
+  }
+
+  .terminal .prompt {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.86rem;
+    color: var(--teal);
+    margin: 0 0 22px;
+  }
+
+  h1 {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    font-size: clamp(1.6rem, 3.8vw, 2.4rem);
+    line-height: 1.3;
+    letter-spacing: -0.005em;
+    margin: 0 0 26px;
+    color: var(--text);
+  }
+
+  .terminal .body {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.98rem;
+    line-height: 1.75;
+    color: var(--text-dim);
+    max-width: 62ch;
+    margin: 0;
+  }
+
+  .links-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .link-chip {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text);
+    text-decoration: none;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 8px 14px 8px 9px;
+  }
+  .link-chip:hover { border-color: var(--amber-dim); }
+  .link-chip .glyph {
+    width: 20px; height: 20px;
+    border-radius: 4px;
+    background: var(--bg);
+    color: var(--amber);
+    font-weight: 700;
+    font-size: 0.62rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .stat-strip {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .stat-tile {
+    padding: 26px 40px;
+    border-right: 1px solid var(--border);
+  }
+  .stat-tile:last-child { border-right: none; }
+  .stat-tile .num {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 600;
+    font-size: 1.3rem;
+    color: var(--teal);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .stat-tile .label {
+    font-family: 'Manrope', sans-serif;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+  }
+  @media (max-width: 640px) {
+    .stat-strip { grid-template-columns: 1fr; }
+    .stat-tile { border-right: none; border-bottom: 1px solid var(--border); }
+    .stat-tile:last-child { border-bottom: none; }
+  }
+
+  .section-label {
+    max-width: 1100px;
+    margin: 56px auto 0;
+    padding: 0 40px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .feature {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 56px 40px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+    border-top: 1px solid var(--border);
+  }
+  .feature.reverse .art { order: 2; }
+  .feature.reverse .copy { order: 1; }
+
+  @media (max-width: 780px) {
+    .feature, .feature.reverse { grid-template-columns: 1fr; padding: 40px; }
+    .feature.reverse .art, .feature.reverse .copy { order: initial; }
+  }
+
+  .art {
+    aspect-ratio: 4 / 3;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: flex-end;
+    padding: 20px;
+  }
+  .art img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+  }
+  .art span {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.05em;
+    color: var(--text-dim);
+    position: relative;
+    z-index: 1;
+  }
+  .art.has-image span {
+    background: rgba(11,15,20,0.72);
+    padding: 4px 8px;
+    border-radius: 4px;
+  }
+  .art::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
+  .art.a1::before { background: repeating-linear-gradient(115deg, rgba(232,163,61,0.14) 0 2px, transparent 2px 26px); }
+  .art.a2::before { background: repeating-linear-gradient(0deg, rgba(79,184,166,0.16) 0 1px, transparent 1px 22px); }
+  .art.a3::before { background: radial-gradient(circle at 30% 25%, rgba(232,163,61,0.18), transparent 55%); }
+  .art.a4::before { background: repeating-linear-gradient(90deg, rgba(139,147,163,0.14) 0 2px, transparent 2px 30px); }
+
+  .tagline {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 16px;
+    flex-wrap: wrap;
+  }
+  .tagline-text {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  .pill {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 3px;
+    white-space: nowrap;
+  }
+  .pill.live { color: var(--teal); background: var(--teal-dim); }
+  .pill.public { color: var(--teal); background: var(--teal-dim); }
+  .pill.case { color: var(--amber); background: var(--amber-dim); }
+  .pill.private { color: var(--text-dim); background: var(--grey-pill); }
+
+  .feature h2 {
+    font-family: 'Manrope', sans-serif;
+    font-weight: 800;
+    font-size: clamp(1.4rem, 2.6vw, 1.8rem);
+    line-height: 1.15;
+    margin: 0 0 16px;
+    color: var(--text);
+    text-wrap: balance;
+  }
+
+  .feature p.body {
+    font-size: 0.98rem;
+    color: var(--text-dim);
+    margin: 0 0 20px;
+  }
+
+  .feature .stack {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    color: var(--text-dim);
+    margin: 0 0 22px;
+  }
+  .feature .stack em { color: var(--amber); font-style: normal; }
+
+  .cta {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.84rem;
+    text-decoration: none;
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 4px;
+    margin-right: 10px;
+    margin-bottom: 8px;
+  }
+  .cta.solid { background: var(--amber); color: #14181F; }
+  .cta.ghost { background: transparent; color: var(--amber); border: 1px solid var(--amber-dim); }
+  .cta.ghost:hover { border-color: var(--amber); }
+
+  .feature .note {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.76rem;
+    color: var(--text-dim);
+    margin-top: 10px;
+  }
+
+  footer {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 56px 40px 90px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem;
+    color: var(--text-dim);
+  }
+  footer a { text-decoration: none; }
+  footer a:hover { color: var(--text); }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="path">bouchra<span>/</span>portfolio</div>
+  <div><span class="status-dot"></span>building in Casablanca</div>
+</div>
+
+<div class="hero">
+  <p class="status-badge"><span class="dot"></span>Open to AI / software engineering opportunities</p>
+  <div>
+    <p class="name"><span class="rule"></span>Bouchra Rguibi</p>
+    <p class="role">AI &amp; Full Stack Engineer &middot; ENSAM Casablanca</p>
+  </div>
+  <div class="terminal">
+    <p class="prompt">$ whoami</p>
+    <h1>I build the layer between<br>messy documents and<br>a straight answer.</h1>
+    <p class="body">I build AI systems that turn complex documents, data, and regulations into usable software, from fiscal copilots and RAG pipelines to structured data applications.</p>
+  </div>
+  <div class="links-row">
+    <a class="link-chip" href="https://linkedin.com/in/bouchra-rguibi-26448824a" target="_blank" rel="noopener"><span class="glyph">in</span>LinkedIn</a>
+    <a class="link-chip" href="https://github.com/Bouchrarg" target="_blank" rel="noopener"><span class="glyph">GH</span>GitHub</a>
+    <a class="link-chip" href="mailto:bouchrarguibi2005@gmail.com"><span class="glyph">@</span>Email</a>
+  </div>
+</div>
+
+<div class="stat-strip">
+  <div class="stat-tile"><span class="num">+1 year</span><span class="label">professional experience at JAAG Advizory, alongside full time studies</span></div>
+  <div class="stat-tile"><span class="num">10 projects</span><span class="label">built end to end, from AI copilots to full stack apps</span></div>
+  <div class="stat-tile"><span class="num">3 platforms</span><span class="label">shipped across web, mobile, and Office tooling</span></div>
+</div>
+
+<p class="section-label">Selected work</p>
+
+<!-- Nisab -->
+<div class="feature">
+  <div class="art a1 has-image">
+    <img src="assets/nisab-overview.png" alt="Nisab dashboard, an overview of a cabinet's dossiers and alerts" loading="lazy">
+    <span>Nisab, cabinet overview</span>
+  </div>
+  <div class="copy">
+    <div class="tagline"><span class="pill live">live</span><span class="tagline-text">AI product, internship at IAAI Academy</span></div>
+    <h2>Nisab</h2>
+    <p class="body">A fiscal copilot for Moroccan accounting firms. It reads accounting entries, flags what does not comply with tax rules, and answers fiscal questions in plain language, citing the exact CGI article or Bulletin Officiel behind every answer.</p>
+    <p class="stack"><em>stack</em> fastapi / postgresql / react / react native / rag</p>
+    <a class="cta solid" href="https://nisab-seven.vercel.app" target="_blank" rel="noopener">Visit live site</a>
+    <a class="cta ghost" href="https://github.com/Bouchrarg/Nisab" target="_blank" rel="noopener">View repository</a>
+  </div>
+</div>
+
+<!-- IFRS Tag Manager -->
+<div class="feature reverse">
+  <div class="art a2"><span>ifrs_tag_manager, tagging interface</span></div>
+  <div class="copy">
+    <div class="tagline"><span class="pill case">case study</span><span class="tagline-text">JAAG Advizory</span></div>
+    <h2>IFRS Tag Manager</h2>
+    <p class="body">An end to end system for automated IFRS and ESEF report tagging, from raw XBRL data to a production interface. The SBERT model behind it reaches 96% top three accuracy across more than 6,000 tags. Live on the client's site, and presented at a LinkedIn webinar.</p>
+    <p class="stack"><em>stack</em> sbert / mcp / react</p>
+    <p class="note">Built for a client engagement. Shown as a case study, source kept with the client.</p>
+  </div>
+</div>
+
+<!-- ESG Report Analysis -->
+<div class="feature">
+  <div class="art a3"><span>esg_report_analysis, dashboard</span></div>
+  <div class="copy">
+    <div class="tagline"><span class="pill live">live</span><span class="tagline-text">Personal project</span></div>
+    <h2>ESG Report Analysis</h2>
+    <p class="body">A sustainability report analyzer. Upload a PDF or XHTML report and get a keyword based ESG score, plus an AI assisted comparison between two reports, backed by authentication, a dashboard, and history.</p>
+    <p class="stack"><em>stack</em> fastapi / react / tailwind</p>
+    <a class="cta solid" href="https://esg-report-analysis.vercel.app" target="_blank" rel="noopener">Visit live site</a>
+    <a class="cta ghost" href="https://github.com/Bouchrarg/ESG_Report_Analysis" target="_blank" rel="noopener">View repository</a>
+  </div>
+</div>
+
+<!-- ESG Auto Tag Manager -->
+<div class="feature reverse">
+  <div class="art a4"><span>esg_auto_tag, taxonomy view</span></div>
+  <div class="copy">
+    <div class="tagline"><span class="pill public">public</span><span class="tagline-text">Personal project</span></div>
+    <h2>ESG Auto Tag Manager</h2>
+    <p class="body">A React app that automates ESRS taxonomy tagging across sustainability reports, so a reviewer spends their time checking judgment calls instead of hunting for tags.</p>
+    <p class="stack"><em>stack</em> react / esrs taxonomy</p>
+    <a class="cta ghost" href="https://github.com/Bouchrarg/ESG_Auto_Tag_Manager" target="_blank" rel="noopener">View repository</a>
+  </div>
+</div>
+
+<!-- WordTagger -->
+<div class="feature">
+  <div class="art a2"><span>wordtagger, word add in</span></div>
+  <div class="copy">
+    <div class="tagline"><span class="pill public">public</span><span class="tagline-text">Personal project</span></div>
+    <h2>WordTagger</h2>
+    <p class="body">A Microsoft Word add in that manages ESRS tags directly inside a document, so a reviewer never has to leave the page they are reading.</p>
+    <p class="stack"><em>stack</em> office add in / node</p>
+    <a class="cta ghost" href="https://github.com/Bouchrarg/WordTagger" target="_blank" rel="noopener">View repository</a>
+  </div>
+</div>
+
+<!-- Waste Wise Eats -->
+<div class="feature reverse">
+  <div class="art a1"><span>waste_wise_eats, recipe view</span></div>
+  <div class="copy">
+    <div class="tagline"><span class="pill live">live</span><span class="tagline-text">Personal project</span></div>
+    <h2>Waste Wise Eats</h2>
+    <p class="body">A recipe app that starts from what is already in your kitchen, built on the Spoonacular API, aimed at cutting down food waste one meal at a time.</p>
+    <p class="stack"><em>stack</em> django / react</p>
+    <a class="cta solid" href="https://waste-wise-eats.vercel.app" target="_blank" rel="noopener">Visit live site</a>
+    <a class="cta ghost" href="https://github.com/Bouchrarg/Waste-Wise-Eats" target="_blank" rel="noopener">View repository</a>
+  </div>
+</div>
+
+<!-- Orthopedic Surgeon Site -->
+<div class="feature">
+  <div class="art a4"><span>orthopedic surgeon site, marketing page</span></div>
+  <div class="copy">
+    <div class="tagline"><span class="pill private">private</span><span class="tagline-text">Client site, demo</span></div>
+    <h2>Orthopedic Surgeon Site</h2>
+    <p class="body">A marketing site built for an orthopedic surgeon, covering the practice, specialties, and booking information. Built for performance and search visibility from the start: server rendered pages, optimized images, and structured metadata throughout.</p>
+    <p class="stack"><em>stack</em> next.js / typescript / tailwind</p>
+    <a class="cta solid" href="https://dr-rguibi-orthopedie-site-demo.vercel.app" target="_blank" rel="noopener">Visit demo</a>
+    <p class="note">The demo uses a fictional practitioner identity. Kept unlisted until the real client publishes it themselves.</p>
+  </div>
+</div>
+
+<!-- Automates -->
+<div class="feature reverse">
+  <div class="art a3"><span>automates, finite automata builder</span></div>
+  <div class="copy">
+    <div class="tagline"><span class="pill public">public</span><span class="tagline-text">Personal project</span></div>
+    <h2>Automates</h2>
+    <p class="body">A desktop GUI tool for building and analyzing finite automata, DFA and NFA. Create states, transitions, and alphabets, then run determinization and minimization, rendered as a graph.</p>
+    <p class="stack"><em>stack</em> python / tkinter / graphviz</p>
+    <a class="cta ghost" href="https://github.com/Bouchrarg/AutomatesProject_5" target="_blank" rel="noopener">View repository</a>
+  </div>
+</div>
+
+<!-- Effort Estimation -->
+<div class="feature">
+  <div class="art a2"><span>effort estimation, streamlit app</span></div>
+  <div class="copy">
+    <div class="tagline"><span class="pill public">public</span><span class="tagline-text">Coursework</span></div>
+    <h2>Mining GitHub Repositories for Intelligent Effort Estimation</h2>
+    <p class="body">An end to end machine learning pipeline that estimates software development effort straight from a GitHub repository's own data, reaching an R squared of 0.893 on the held out test set.</p>
+    <p class="stack"><em>stack</em> python / scikit learn / streamlit</p>
+    <a class="cta ghost" href="https://github.com/Bouchrarg/Intelligent_Effort_Estimation" target="_blank" rel="noopener">View repository</a>
+  </div>
+</div>
+
+<!-- Capital Agent -->
+<div class="feature reverse">
+  <div class="art a1"><span>capital_agent, orchestration view</span></div>
+  <div class="copy">
+    <div class="tagline"><span class="pill private">private</span><span class="tagline-text">Personal project</span></div>
+    <h2>Capital Agent</h2>
+    <p class="body">A multi agent system for financial data analysis, built on an existing base that I extended and brought into working, production shaped form.</p>
+    <p class="stack"><em>stack</em> adk / bigquery</p>
+    <p class="note">Repository kept private, the base code was not originally mine.</p>
+  </div>
+</div>
+
+<!-- DRL Model Compression -->
+<div class="feature">
+  <div class="art a4"><span>model compression, pruning results</span></div>
+  <div class="copy">
+    <div class="tagline"><span class="pill case">case study</span><span class="tagline-text">Research project</span></div>
+    <h2>DRL Model Compression</h2>
+    <p class="body">A reinforcement learning approach to compressing DistilBERT: a PPO agent learns which layers to prune, trained in a custom Gymnasium environment and evaluated on SST-2.</p>
+    <p class="stack"><em>stack</em> pytorch / gymnasium / distilbert</p>
+    <p class="note">Report available on request.</p>
+  </div>
+</div>
+
+<footer>
+  <span>bouchrarg.github.io</span>
+  <span><a href="https://github.com/Bouchrarg" target="_blank" rel="noopener">GitHub</a> &nbsp; <a href="https://linkedin.com/in/bouchra-rguibi-26448824a" target="_blank" rel="noopener">LinkedIn</a> &nbsp; <a href="mailto:bouchrarguibi2005@gmail.com">Email</a></span>
+</footer>
+
+</body>
+</html>
